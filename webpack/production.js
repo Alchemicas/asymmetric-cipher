@@ -29,6 +29,7 @@ common.optimization = {
 }
 common.output.chunkFilename = 'chunks/[name].[contenthash].mjs'
 common.output.clean = true
+common.output.publicPath = './'
 common.plugins.unshift(
   new HtmlWebpackPlugin({
     attributes: {
