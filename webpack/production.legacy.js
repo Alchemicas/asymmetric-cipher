@@ -13,7 +13,7 @@ common.plugins[0] = new HtmlWebpackPlugin({
   attributes: {
     nomodule: (v) => (v.tagName === 'script' ? true : undefined)
   },
-  template: path.resolve(__dirname, '../dist/index.html')
+  template: path.resolve(__dirname, '../docs/index.html')
 })
 common.plugins = common.plugins.slice(0, 2)
 

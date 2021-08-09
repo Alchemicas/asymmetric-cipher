@@ -58,7 +58,7 @@ class AppStore {
     this.data.keyPair.raw.private = rawPrivateKey
     this.data.keyPair.raw.public = rawPublicKey
 
-    Cookie.set(CookieName.APP, this.data.keyPair.raw, undefined, { sameSite: 'strict', secure: true })
+    Cookie.set(CookieName.APP, this.data.keyPair.raw, undefined, { domain: 'alchemicas.github.io', sameSite: 'strict', secure: true })
 
     this.status.success(AppStatusKey.INITIALIZE)
 
