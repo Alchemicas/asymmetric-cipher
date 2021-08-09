@@ -1,12 +1,12 @@
 import { ObjectUtils, StoreUtils } from '@queelag/core'
 import { InputProps, InputStore, INPUT_PROPS_KEYS, INPUT_STORE_KEYS, ReactUtils, useForceUpdate, useObserver } from '@queelag/react-core'
-import React, { useEffect, useMemo } from 'react'
+import React, { ChangeEvent, useEffect, useMemo } from 'react'
 
 export function Input<T extends object>(props: InputProps<T>) {
   const update = useForceUpdate()
   const store = useMemo(() => new InputStore({ ...props, update }), [])
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     store.onChange(e)
     props.onChange && props.onChange(e)
   }
@@ -16,7 +16,7 @@ export function Input<T extends object>(props: InputProps<T>) {
   return useObserver(() => (
     <div
       className={ReactUtils.joinClassNames(
-        'flex items-center space-x-6 p-6 rounded-sm border-2 border-gray-800',
+        'flex items-center space-x-6 p-6 rounded-sm border-2 border-gray-800 bg-black',
         'transition duration-200',
         props.className,
         !props.readOnly && 'hover:border-gray-700 focus:border-gray-700'

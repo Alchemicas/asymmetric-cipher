@@ -39,6 +39,8 @@ class AppStore {
         publicKey
       }
 
+      Logger.debug('AppStore', 'initialize', `The iv has been generated and the key pair has been imported.`, this.data.iv, this.data.keyPair.crypto)
+
       this.status.success(AppStatusKey.INITIALIZE)
 
       return true
@@ -57,6 +59,16 @@ class AppStore {
     this.data.iv = Crypto.randomIV
     this.data.keyPair.raw.private = rawPrivateKey
     this.data.keyPair.raw.public = rawPublicKey
+
+    Logger.debug(
+      'AppStore',
+      'initialize',
+      `The iv and key pair have been generated, private and public keys have been exported.`,
+      keyPair,
+      this.data.iv,
+      rawPrivateKey,
+      rawPublicKey
+    )
 
     Cookie.set(CookieName.APP, this.data.keyPair.raw, undefined, { domain: 'alchemicas.github.io', sameSite: 'strict', secure: true })
 
@@ -78,6 +90,8 @@ class AppStore {
 
     this.data.derivedKey = derivedKey
     this.data.receiver.publicKey = receiverPublicKey
+
+    Logger.debug('AppStore', 'initializeCipher', `The receiver public key has been imported and the AES key has been derived.`, derivedKey, receiverPublicKey)
 
     this.status.success(AppStatusKey.INITIALIZE_CIPHER)
 

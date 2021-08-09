@@ -13,7 +13,7 @@ import { AppMode, AppStatusKey } from './definitions/enums'
 import { appStore } from './stores/app.store'
 
 configure({ enforceActions: 'never' })
-Logger.level = LoggerLevel.DEBUG
+Logger.level = LoggerLevel.ERROR
 
 export const App = observer(() => {
   useEffect(() => {
@@ -48,10 +48,21 @@ export const App = observer(() => {
     return <Loading />
   }
 
+  const onClickIV = () => {
+    window.navigator.clipboard.writeText(appStore.data.iv)
+
+    appStore.status.idle(AppStatusKey.COPIED_ENCRYPTED_TEXT)
+    appStore.status.idle(AppStatusKey.COPIED_PUBLIC_KEY)
+    appStore.status.success(AppStatusKey.COPIED_IV)
+
+    window.scrollTo({ top: 0 })
+  }
+
   const onClickPublicKey = () => {
     window.navigator.clipboard.writeText(appStore.data.keyPair.raw.public)
 
     appStore.status.idle(AppStatusKey.COPIED_ENCRYPTED_TEXT)
+    appStore.status.idle(AppStatusKey.COPIED_IV)
     appStore.status.success(AppStatusKey.COPIED_PUBLIC_KEY)
 
     window.scrollTo({ top: 0 })
@@ -61,17 +72,21 @@ export const App = observer(() => {
     window.navigator.clipboard.writeText(appStore.data.text.encrypted)
 
     appStore.status.idle(AppStatusKey.COPIED_PUBLIC_KEY)
+    appStore.status.idle(AppStatusKey.COPIED_IV)
     appStore.status.success(AppStatusKey.COPIED_ENCRYPTED_TEXT)
 
     window.scrollTo({ top: 0 })
   }
 
   return (
-    <div>
+    <Fragment>
       <Header />
       <div className='max-w-screen-lg mx-auto flex flex-col p-6 pb-96 space-y-6'>
         {appStore.status.isSuccess(AppStatusKey.COPIED_ENCRYPTED_TEXT) && (
           <Alert>The encrypted text has been copied to the clipboard, it is safe to share it anywhere.</Alert>
+        )}
+        {appStore.status.isSuccess(AppStatusKey.COPIED_IV) && (
+          <Alert>The initialization vector has been copied to the clipboard, it is safe to share it anywhere.</Alert>
         )}
         {appStore.status.isSuccess(AppStatusKey.COPIED_PUBLIC_KEY) && (
           <Alert>Your public key has been copied to the clipboard, it is safe to share it anywhere.</Alert>
@@ -84,7 +99,9 @@ export const App = observer(() => {
           store={appStore.data.keyPair.raw}
           readOnly
         />
-        {appStore.hasIV && <Input label='initialization vector' path='iv' placeholder='ex. long_alphanumerical_string' store={appStore.data} readOnly />}
+        {appStore.hasIV && (
+          <Input label='initialization vector' onClick={onClickIV} path='iv' placeholder='ex. long_alphanumerical_string' store={appStore.data} readOnly />
+        )}
         {appStore.hasIVAndReceiverPublicKey && (
           <Fragment>
             <Input
@@ -148,6 +165,6 @@ export const App = observer(() => {
           </Fragment>
         )}
       </div>
-    </div>
+    </Fragment>
   )
 })

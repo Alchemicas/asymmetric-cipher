@@ -21,6 +21,8 @@ export class Crypto {
     decrypted = await tcp(() => window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: Base64.decode(iv), length: 256 }, key, Base64.decode(encrypted)))
     if (decrypted instanceof Error) return decrypted
 
+    Logger.debug('Crypto', 'decrypt', `The encrypted data has been decrypted.`, decrypted, key, iv)
+
     return this.decoder.decode(decrypted)
   }
 
@@ -29,6 +31,8 @@ export class Crypto {
 
     encrypted = await tcp(() => window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: Base64.decode(iv), length: 256 }, key, this.encoder.encode(text)))
     if (encrypted instanceof Error) return encrypted
+
+    Logger.debug('Crypto', 'encrypt', `The text has been encrypted.`, encrypted, key, iv)
 
     return Base64.encode(encrypted)
   }
@@ -39,7 +43,7 @@ export class Crypto {
     jwk = await tcp(() => window.crypto.subtle.exportKey('jwk', key))
     if (jwk instanceof Error) return jwk
 
-    Logger.debug('Crypto', 'exportKey', `The key has been exported.`, key, jwk)
+    Logger.debug('Crypto', 'exportKey', `The key has been exported.`, jwk, key)
 
     return Base64.encode(this.encoder.encode(JSON.stringify(jwk)))
   }
@@ -59,18 +63,9 @@ export class Crypto {
     )
     if (pair instanceof Error) return pair
 
-    Logger.debug('Crypto', 'generateKeyPair', `The key pair has been generated.`, pair)
+    Logger.debug('Crypto', 'generateECDHKeyPair', `The key pair has been generated.`, pair)
 
     return pair
-  }
-
-  static async hash(string: string): Promise<string | Error> {
-    let hash: ArrayBuffer | Error
-
-    hash = await tcp(() => window.crypto.subtle.digest('SHA-512', this.encoder.encode(string)))
-    if (hash instanceof Error) return hash
-
-    return Base64.encode(hash)
   }
 
   static async importECDHKey(base64JWK: string): Promise<CryptoKey | Error> {

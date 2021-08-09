@@ -43,7 +43,7 @@ module.exports = {
   output: {
     filename: '[name].[contenthash].mjs',
     path: path.resolve(__dirname, '../docs'),
-    publicPath: './'
+    publicPath: '/'
   },
   plugins: [new HtmlWebpackInjectAttributesPlugin()],
   resolve: {
