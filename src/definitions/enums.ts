@@ -1,0 +1,17 @@
+export enum AppMode {
+  DECRYPTION = 'Decryption',
+  ENCRYPTION = 'Encryption'
+}
+
+export enum AppStatusKey {
+  COPIED_ENCRYPTED_TEXT = 'COPIED_ENCRYPTED_TEXT',
+  COPIED_PUBLIC_KEY = 'COPIED_PUBLIC_KEY',
+  INITIALIZE = 'INITIALIZE',
+  INITIALIZE_CIPHER = 'INITIALIZE_CIPHER',
+  DECRYPT_TEXT = 'DECRYPT_TEXT',
+  ENCRYPT_TEXT = 'ENCRYPT_TEXT'
+}
+
+export enum CookieName {
+  APP = 'APP'
+}

@@ -1,0 +1,22 @@
+const common = require('./common')
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+common.devServer = {
+  // host: '0.0.0.0',
+  disableHostCheck: true,
+  hot: true,
+  historyApiFallback: true,
+  open: true,
+  overlay: true
+}
+common.devtool = 'source-map'
+common.mode = 'development'
+common.module.rules[0].use.options.plugins = ['react-refresh/babel']
+common.plugins.push(new HtmlWebpackPlugin({ template: path.resolve(__dirname, '../public/index.html') }))
+common.plugins.push(new MiniCssExtractPlugin())
+common.plugins.push(new ReactRefreshWebpackPlugin())
+
+module.exports = common

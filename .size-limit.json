@@ -1,0 +1,10 @@
+[
+  {
+    "name": "core",
+    "path": ["dist/index.html", "dist/main.*.css", "dist/main.*.mjs"]
+  },
+  {
+    "name": "core:legacy",
+    "path": ["dist/index.html", "dist/main.*.css", "dist/main.*.js"]
+  }
+]
