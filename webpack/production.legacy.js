@@ -15,6 +15,7 @@ common.plugins[0] = new HtmlWebpackPlugin({
   },
   template: path.resolve(__dirname, '../docs/index.html')
 })
-common.plugins = common.plugins.slice(0, 2)
+common.plugins.pop()
+// common.plugins = common.plugins.slice(0, 2)
 
 module.exports = common

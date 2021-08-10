@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
+process.env.NODE_ENV = 'production'
+
 common.mode = 'production'
 common.module.rules[0].use.options.presets.unshift([
   '@babel/preset-env',
@@ -29,7 +31,7 @@ common.optimization = {
 }
 common.output.chunkFilename = 'chunks/[name].[contenthash].mjs'
 common.output.clean = true
-common.output.publicPath = './'
+common.output.publicPath = '/asymmetric-cipher'
 common.plugins.unshift(
   new HtmlWebpackPlugin({
     attributes: {

@@ -1,6 +1,9 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackInjectAttributesPlugin = require('html-webpack-inject-attributes-plugin')
+const { EnvironmentPlugin } = require('webpack')
+const { ProvidePlugin } = require('webpack')
+const { DefinePlugin } = require('webpack')
 
 module.exports = {
   entry: path.resolve(__dirname, '../src/index.tsx'),
@@ -45,7 +48,13 @@ module.exports = {
     path: path.resolve(__dirname, '../docs'),
     publicPath: '/'
   },
-  plugins: [new HtmlWebpackInjectAttributesPlugin()],
+  plugins: [
+    new HtmlWebpackInjectAttributesPlugin(),
+    new ProvidePlugin({
+      process: 'process/browser'
+    }),
+    new EnvironmentPlugin(['NODE_ENV'])
+  ],
   resolve: {
     alias: {
       // '@queelag/core': path.resolve(__dirname, '../node_modules/@queelag/core'),

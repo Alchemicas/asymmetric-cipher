@@ -10,10 +10,11 @@ import { Input } from './components/Input'
 import { Loading } from './components/Loading'
 import { TextArea } from './components/TextArea'
 import { AppMode, AppStatusKey } from './definitions/enums'
+import { Environment } from './modules/Environment'
 import { appStore } from './stores/app.store'
 
 configure({ enforceActions: 'never' })
-Logger.level = LoggerLevel.ERROR
+Logger.level = Environment.isDevelopment ? LoggerLevel.DEBUG : LoggerLevel.ERROR
 
 export const App = observer(() => {
   useEffect(() => {
@@ -28,13 +29,13 @@ export const App = observer(() => {
         textToDecrypt = params.get('ttd')
 
         if (iv && receiverRawPublicKey) {
-          appStore.data.iv = iv.replace(/ /g, '+')
+          appStore.data.iv = iv
           appStore.data.mode = AppMode.ENCRYPTION
-          appStore.data.receiver.rawPublicKey = receiverRawPublicKey.replace(/ /g, '+')
+          appStore.data.receiver.rawPublicKey = receiverRawPublicKey
 
           if (textToDecrypt) {
             appStore.data.mode = AppMode.DECRYPTION
-            appStore.data.text.toDecrypt = textToDecrypt.replace(/ /g, '+')
+            appStore.data.text.toDecrypt = textToDecrypt
           }
 
           return appStore.initializeCipher()

@@ -4,6 +4,7 @@ import { AppMode, AppStatusKey, CookieName } from '../definitions/enums'
 import { AppData } from '../definitions/interfaces'
 import { Crypto } from '../modules/Crypto'
 import { Dummy } from '../modules/Dummy'
+import { Environment } from '../modules/Environment'
 
 class AppStore {
   data: AppData
@@ -70,7 +71,11 @@ class AppStore {
       rawPublicKey
     )
 
-    Cookie.set(CookieName.APP, this.data.keyPair.raw, undefined, { domain: 'alchemicas.github.io', sameSite: 'strict', secure: true })
+    Cookie.set(CookieName.APP, this.data.keyPair.raw, undefined, {
+      domain: Environment.isProduction ? 'alchemicas.github.io' : undefined,
+      sameSite: 'strict',
+      secure: true
+    })
 
     this.status.success(AppStatusKey.INITIALIZE)
 
@@ -134,9 +139,9 @@ class AppStore {
     return URLUtils.appendSearchParams(
       URLUtils.concat(window.location.origin, window.location.pathname),
       QueryParametersUtils.toString({
-        iv: this.data.iv,
-        rrpuk: this.data.keyPair.raw.public,
-        ttd: this.data.text.encrypted
+        iv: window.encodeURIComponent(this.data.iv),
+        rrpuk: window.encodeURIComponent(this.data.keyPair.raw.public),
+        ttd: window.encodeURIComponent(this.data.text.encrypted)
       })
     )
   }
@@ -145,8 +150,8 @@ class AppStore {
     return URLUtils.appendSearchParams(
       URLUtils.concat(window.location.origin, window.location.pathname),
       QueryParametersUtils.toString({
-        iv: this.data.iv,
-        rrpuk: this.data.keyPair.raw.public
+        iv: window.encodeURIComponent(this.data.iv),
+        rrpuk: window.encodeURIComponent(this.data.keyPair.raw.public)
       })
     )
   }

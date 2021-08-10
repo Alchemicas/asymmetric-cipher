@@ -4,8 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+process.env.NODE_ENV = 'development'
+
 common.devServer = {
-  // host: '0.0.0.0',
   disableHostCheck: true,
   hot: true,
   historyApiFallback: true,
