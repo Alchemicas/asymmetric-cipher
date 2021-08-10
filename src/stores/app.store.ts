@@ -1,4 +1,4 @@
-import { Cookie, Logger, rc, Status } from '@queelag/core'
+import { Cookie, Logger, QueryParametersUtils, rc, Status, URLUtils } from '@queelag/core'
 import { makeObservable, observable } from 'mobx'
 import { AppMode, AppStatusKey, CookieName } from '../definitions/enums'
 import { AppData } from '../definitions/interfaces'
@@ -131,11 +131,24 @@ class AppStore {
   }
 
   get linkToDecrypt(): string {
-    return `${window.location.origin}?iv=${this.data.iv}&rrpuk=${this.data.keyPair.raw.public}&ttd=${this.data.text.encrypted}`
+    return URLUtils.appendSearchParams(
+      URLUtils.concat(window.location.origin, window.location.pathname),
+      QueryParametersUtils.toString({
+        iv: this.data.iv,
+        rrpuk: this.data.keyPair.raw.public,
+        ttd: this.data.text.encrypted
+      })
+    )
   }
 
   get linkToEncrypt(): string {
-    return `${window.location.origin}?iv=${this.data.iv}&rrpuk=${this.data.keyPair.raw.public}`
+    return URLUtils.appendSearchParams(
+      URLUtils.concat(window.location.origin, window.location.pathname),
+      QueryParametersUtils.toString({
+        iv: this.data.iv,
+        rrpuk: this.data.keyPair.raw.public
+      })
+    )
   }
 
   get hasIV(): boolean {
