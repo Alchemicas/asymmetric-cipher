@@ -1,10 +1,9 @@
-import { Cookie, Logger, QueryParametersUtils, rc, Status, URLUtils } from '@queelag/core'
+import { Cookie, Environment, Logger, QueryParametersUtils, rc, Status, URLUtils } from '@queelag/core'
 import { makeObservable, observable } from 'mobx'
 import { AppMode, AppStatusKey, CookieName } from '../definitions/enums'
 import { AppData } from '../definitions/interfaces'
 import { Crypto } from '../modules/Crypto'
 import { Dummy } from '../modules/Dummy'
-import { Environment } from '../modules/Environment'
 
 class AppStore {
   data: AppData

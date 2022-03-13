@@ -1,17 +1,25 @@
-import { ObjectUtils, StoreUtils } from '@queelag/core'
-import { InputProps, InputStore, INPUT_PROPS_KEYS, INPUT_STORE_KEYS, ReactUtils, useForceUpdate, useObserver } from '@queelag/react-core'
-import React, { ChangeEvent, useEffect, useMemo } from 'react'
+import { ObjectUtils } from '@queelag/core'
+import {
+  InputCollector,
+  InputProps,
+  InputStore,
+  INPUT_PROPS_KEYS,
+  INPUT_STORE_KEYS,
+  ReactUtils,
+  useComponentFormFieldStore,
+  useObserver
+} from '@queelag/react-core'
+import React, { ChangeEvent } from 'react'
 
 export function Input<T extends object>(props: InputProps<T>) {
-  const update = useForceUpdate()
-  const store = useMemo(() => new InputStore({ ...props, update }), [])
+  const store = useComponentFormFieldStore(InputStore, props, InputCollector, INPUT_STORE_KEYS, 'input')
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     store.onChange(e)
     props.onChange && props.onChange(e)
-  }
 
-  useEffect(() => StoreUtils.updateKeys(store, props, INPUT_STORE_KEYS), ObjectUtils.pickToArray(props, INPUT_STORE_KEYS))
+    console.log(InputCollector.get(store.store, store.path as any))
+  }
 
   return useObserver(() => (
     <div

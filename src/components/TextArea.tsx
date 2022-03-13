@@ -1,12 +1,20 @@
 import { ObjectUtils, StoreUtils } from '@queelag/core'
-import { InputProps, InputStore, INPUT_PROPS_KEYS, INPUT_STORE_KEYS, ReactUtils, useForceUpdate, useObserver } from '@queelag/react-core'
-import React, { ChangeEvent, useEffect, useMemo } from 'react'
+import {
+  InputCollector,
+  InputProps,
+  InputStore,
+  INPUT_PROPS_KEYS,
+  INPUT_STORE_KEYS,
+  ReactUtils,
+  useComponentFormFieldStore,
+  useObserver
+} from '@queelag/react-core'
+import React, { ChangeEvent, useEffect } from 'react'
 
 export function TextArea<T extends object>(
   props: InputProps<T> & React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>
 ) {
-  const update = useForceUpdate()
-  const store = useMemo(() => new InputStore({ ...props, update }), [])
+  const store = useComponentFormFieldStore(InputStore, props as any, InputCollector, INPUT_STORE_KEYS, 'input')
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     store.onChange(e as any)

@@ -1,4 +1,4 @@
-import { Logger, LoggerLevel, PromiseUtils } from '@queelag/core'
+import { Environment, Logger, LoggerLevel, PromiseUtils } from '@queelag/core'
 import { ReactUtils } from '@queelag/react-core'
 import { IconArrowUp } from '@queelag/react-feather-icons'
 import { configure } from 'mobx'
@@ -10,7 +10,6 @@ import { Input } from './components/Input'
 import { Loading } from './components/Loading'
 import { TextArea } from './components/TextArea'
 import { AppMode, AppStatusKey } from './definitions/enums'
-import { Environment } from './modules/Environment'
 import { appStore } from './stores/app.store'
 
 configure({ enforceActions: 'never' })
