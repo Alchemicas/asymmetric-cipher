@@ -1,7 +1,8 @@
-import { Cookie, Environment, Logger, QueryParametersUtils, rc, Status, URLUtils } from '@queelag/core'
-import { makeObservable, observable } from 'mobx'
+import { Cookie, Environment, QueryParametersUtils, rc, Status, URLUtils } from '@queelag/core'
+import { observe } from '@queelag/state-manager'
 import { AppMode, AppStatusKey, CookieName } from '../definitions/enums'
 import { AppData } from '../definitions/interfaces'
+import { StoreLogger } from '../loggers/store.logger'
 import { Crypto } from '../modules/Crypto'
 import { Dummy } from '../modules/Dummy'
 
@@ -13,8 +14,8 @@ class AppStore {
     this.data = Dummy.appData
     this.status = new Status()
 
-    makeObservable(this, { data: observable })
-    makeObservable(this.status, { data: observable })
+    observe(this, ['data'])
+    observe(this.status, ['data'])
   }
 
   async initialize(): Promise<boolean> {
@@ -39,7 +40,7 @@ class AppStore {
         publicKey
       }
 
-      Logger.debug('AppStore', 'initialize', `The iv has been generated and the key pair has been imported.`, this.data.iv, this.data.keyPair.crypto)
+      StoreLogger.debug('AppStore', 'initialize', `The iv has been generated and the key pair has been imported.`, this.data.iv, this.data.keyPair.crypto)
 
       this.status.success(AppStatusKey.INITIALIZE)
 
@@ -60,7 +61,7 @@ class AppStore {
     this.data.keyPair.raw.private = rawPrivateKey
     this.data.keyPair.raw.public = rawPublicKey
 
-    Logger.debug(
+    StoreLogger.debug(
       'AppStore',
       'initialize',
       `The iv and key pair have been generated, private and public keys have been exported.`,
@@ -95,7 +96,13 @@ class AppStore {
     this.data.derivedKey = derivedKey
     this.data.receiver.publicKey = receiverPublicKey
 
-    Logger.debug('AppStore', 'initializeCipher', `The receiver public key has been imported and the AES key has been derived.`, derivedKey, receiverPublicKey)
+    StoreLogger.debug(
+      'AppStore',
+      'initializeCipher',
+      `The receiver public key has been imported and the AES key has been derived.`,
+      derivedKey,
+      receiverPublicKey
+    )
 
     this.status.success(AppStatusKey.INITIALIZE_CIPHER)
 
@@ -111,7 +118,7 @@ class AppStore {
     if (decrypted instanceof Error) return rc(() => this.status.error(AppStatusKey.DECRYPT_TEXT), false)
 
     this.data.text.decrypted = decrypted
-    Logger.debug('AppStore', 'decryptText', `The text has been decrypted.`, decrypted)
+    StoreLogger.debug('AppStore', 'decryptText', `The text has been decrypted.`, decrypted)
 
     this.status.success(AppStatusKey.DECRYPT_TEXT)
 
@@ -127,7 +134,7 @@ class AppStore {
     if (encrypted instanceof Error) return rc(() => this.status.error(AppStatusKey.ENCRYPT_TEXT), false)
 
     this.data.text.encrypted = encrypted
-    Logger.debug('AppStore', 'encryptText', `The text has been encrypted.`, encrypted)
+    StoreLogger.debug('AppStore', 'encryptText', `The text has been encrypted.`, encrypted)
 
     this.status.success(AppStatusKey.ENCRYPT_TEXT)
 

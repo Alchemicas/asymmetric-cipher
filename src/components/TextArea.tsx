@@ -1,14 +1,6 @@
 import { ObjectUtils, StoreUtils } from '@queelag/core'
-import {
-  InputCollector,
-  InputProps,
-  InputStore,
-  INPUT_PROPS_KEYS,
-  INPUT_STORE_KEYS,
-  ReactUtils,
-  useComponentFormFieldStore,
-  useObserver
-} from '@queelag/react-core'
+import { InputCollector, InputProps, InputStore, INPUT_PROPS_KEYS, INPUT_STORE_KEYS, ReactUtils, useComponentFormFieldStore } from '@queelag/react-core'
+import { useObserver } from '@queelag/state-manager-react'
 import React, { ChangeEvent, useEffect } from 'react'
 
 export function TextArea<T extends object>(

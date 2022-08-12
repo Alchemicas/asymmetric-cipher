@@ -1,4 +1,5 @@
-import { ReactUtils, useObserver } from '@queelag/react-core'
+import { ReactUtils } from '@queelag/react-core'
+import { useObserver } from '@queelag/state-manager-react'
 import React from 'react'
 import { AppMode } from '../definitions/enums'
 import { appStore } from '../stores/app.store'

@@ -1,10 +1,8 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  darkMode: false,
-  mode: 'jit',
+  content: ['./src/**/*.ts*'],
   plugins: [require('@tailwindcss/line-clamp')],
-  purge: ['./src/**/*.ts*'],
   theme: {
     extend: {
       colors: {
@@ -12,7 +10,7 @@ module.exports = {
         cyan: colors.cyan,
         emerald: colors.emerald,
         fuchsia: colors.fuchsia,
-        gray: colors.blueGray,
+        gray: colors.slate,
         lime: colors.lime,
         orange: colors.orange,
         rose: colors.rose,
@@ -24,8 +22,5 @@ module.exports = {
         200: '2'
       }
     }
-  },
-  variants: {
-    extend: {}
   }
 }

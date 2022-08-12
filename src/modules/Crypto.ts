@@ -1,4 +1,5 @@
-import { Base64, Logger, tc, tcp } from '@queelag/core'
+import { Base64, tc, tcp } from '@queelag/core'
+import { ModuleLogger } from '../loggers/module.logger'
 
 export class Crypto {
   static decoder: TextDecoder = new TextDecoder()
@@ -10,7 +11,7 @@ export class Crypto {
     key = await tcp(() => window.crypto.subtle.deriveKey({ name: 'ECDH', public: puk }, prk, { name: 'AES-GCM', length: 256 }, false, ['decrypt', 'encrypt']))
     if (key instanceof Error) return key
 
-    Logger.debug('Crypto', 'deriveAESKeyFromPair', `The key has been derived from the pair.`, key, prk, puk)
+    ModuleLogger.debug('Crypto', 'deriveAESKeyFromPair', `The key has been derived from the pair.`, key, prk, puk)
 
     return key
   }
@@ -21,7 +22,7 @@ export class Crypto {
     decrypted = await tcp(() => window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: Base64.decode(iv), length: 256 }, key, Base64.decode(encrypted)))
     if (decrypted instanceof Error) return decrypted
 
-    Logger.debug('Crypto', 'decrypt', `The encrypted data has been decrypted.`, decrypted, key, iv)
+    ModuleLogger.debug('Crypto', 'decrypt', `The encrypted data has been decrypted.`, decrypted, key, iv)
 
     return this.decoder.decode(decrypted)
   }
@@ -32,7 +33,7 @@ export class Crypto {
     encrypted = await tcp(() => window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: Base64.decode(iv), length: 256 }, key, this.encoder.encode(text)))
     if (encrypted instanceof Error) return encrypted
 
-    Logger.debug('Crypto', 'encrypt', `The text has been encrypted.`, encrypted, key, iv)
+    ModuleLogger.debug('Crypto', 'encrypt', `The text has been encrypted.`, encrypted, key, iv)
 
     return Base64.encode(encrypted)
   }
@@ -43,7 +44,7 @@ export class Crypto {
     jwk = await tcp(() => window.crypto.subtle.exportKey('jwk', key))
     if (jwk instanceof Error) return jwk
 
-    Logger.debug('Crypto', 'exportKey', `The key has been exported.`, jwk, key)
+    ModuleLogger.debug('Crypto', 'exportKey', `The key has been exported.`, jwk, key)
 
     return Base64.encode(this.encoder.encode(JSON.stringify(jwk)))
   }
@@ -63,7 +64,7 @@ export class Crypto {
     )
     if (pair instanceof Error) return pair
 
-    Logger.debug('Crypto', 'generateECDHKeyPair', `The key pair has been generated.`, pair)
+    ModuleLogger.debug('Crypto', 'generateECDHKeyPair', `The key pair has been generated.`, pair)
 
     return pair
   }
@@ -85,7 +86,7 @@ export class Crypto {
     )
     if (key instanceof Error) return key
 
-    Logger.debug('Crypto', 'importECDHKey', `The key has been imported.`, jwk, key)
+    ModuleLogger.debug('Crypto', 'importECDHKey', `The key has been imported.`, jwk, key)
 
     return key
   }

@@ -1,8 +1,7 @@
-import { Environment, Logger, LoggerLevel, PromiseUtils } from '@queelag/core'
+import { PromiseUtils } from '@queelag/core'
 import { ReactUtils } from '@queelag/react-core'
 import { IconArrowUp } from '@queelag/react-feather-icons'
-import { configure } from 'mobx'
-import { observer } from 'mobx-react'
+import { observer } from '@queelag/state-manager-react'
 import React, { Fragment, useEffect } from 'react'
 import { Alert } from './components/Alert'
 import { Header } from './components/Header'
@@ -11,9 +10,6 @@ import { Loading } from './components/Loading'
 import { TextArea } from './components/TextArea'
 import { AppMode, AppStatusKey } from './definitions/enums'
 import { appStore } from './stores/app.store'
-
-configure({ enforceActions: 'never' })
-Logger.level = Environment.isDevelopment ? LoggerLevel.DEBUG : LoggerLevel.ERROR
 
 export const App = observer(() => {
   useEffect(() => {
