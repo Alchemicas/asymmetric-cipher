@@ -7,11 +7,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 process.env.NODE_ENV = 'development'
 
 common.devServer = {
-  disableHostCheck: true,
   hot: true,
   historyApiFallback: true,
-  open: true,
-  overlay: true
+  open: true
 }
 common.devtool = 'source-map'
 common.mode = 'development'

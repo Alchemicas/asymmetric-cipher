@@ -1,8 +1,8 @@
 import { PromiseUtils } from '@queelag/core'
 import { ReactUtils } from '@queelag/react-core'
 import { IconArrowUp } from '@queelag/react-feather-icons'
-import { observer } from '@queelag/state-manager-react'
-import React, { Fragment, useEffect } from 'react'
+import { useWhen } from '@queelag/state-manager-react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Alert } from './components/Alert'
 import { Header } from './components/Header'
 import { Input } from './components/Input'
@@ -11,7 +11,9 @@ import { TextArea } from './components/TextArea'
 import { AppMode, AppStatusKey } from './definitions/enums'
 import { appStore } from './stores/app.store'
 
-export const App = observer(() => {
+export function App() {
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     PromiseUtils.truthyChain(
       () => appStore.initialize(),
@@ -40,7 +42,12 @@ export const App = observer(() => {
     )
   }, [])
 
-  if (appStore.status.isPending(AppStatusKey.INITIALIZE)) {
+  useWhen(
+    () => appStore.status.isSuccess(AppStatusKey.INITIALIZE),
+    () => setLoading(false)
+  )
+
+  if (loading) {
     return <Loading />
   }
 
@@ -163,4 +170,4 @@ export const App = observer(() => {
       </div>
     </Fragment>
   )
-})
+}
